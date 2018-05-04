@@ -4,20 +4,32 @@
 import pygame, sys
 pygame.init()
 
+background = pygame.image.load("//ad.ocdsb.ca/studenthome/6/S331389056/computer science 2018/Summative game/Supernova-Hunters-800x533.png")
 # Define some colours
-WHITE = (255, 255, 255)
-GRAY = (127, 127, 127)
 BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-BLUE = (0, 0, 255)
+WHITE = (255, 255, 255)
+GREEN = (177, 227, 102)
+BRIGHT_GREEN = (205, 237, 157)
+RED = (234, 53, 70)
+BRIGHT_RED = (241,126,137)
+BRIGHT_Blue = (135,212,223)
+Blue = (67,188,205)
 
-SCREENWIDTH = 120
-SCREENHEIGHT = 100
+SCREENWIDTH = 800
+SCREENHEIGHT = 533
 size = (SCREENWIDTH, SCREENHEIGHT)
 screen = pygame.display.set_mode(size)
 
+
+
+#pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=4096)
+#pygame.mixer.music.load()
+#pygame.mixer.music.play(-1)
+
+
 class Button():
     """This is a class for a generic button.
+    
        txt = text on the button
        location = (x,y) coordinates of the button's centre
        action = name of function to run when button is pressed
@@ -27,7 +39,7 @@ class Button():
        font_name = name of font
        font_size = size of font
     """
-    def __init__(self, txt, location, action, bg=WHITE, fg=BLACK, size=(80, 30), font_name="Segoe Print", font_size=16):
+    def __init__(self, txt, location, action, bg=WHITE, fg=BLACK, size=(100, 40), font_name="Segoe Print", font_size=16):
         self.color = bg  # the static (normal) color
         self.bg = bg  # actual background color, can change on mouseover
         self.fg = fg  # text color
@@ -55,12 +67,12 @@ class Button():
         self.bg = self.color
         pos = pygame.mouse.get_pos()
         if self.rect.collidepoint(pos):
-            self.bg = GRAY  # mouseover color
+            self.bg = BRIGHT_RED  # mouseover color
 
     def call_back(self):
         """Runs a function when clicked"""
         self.call_back_()
-
+        
 def my_shell_function():
     """A generic function that prints something in the shell"""
     print('Fire the nukes!')
@@ -70,8 +82,12 @@ def my_next_function():
     global level
     level += 1
 
+def my_play():
+    print("Play")
+    
 def my_previous_function():
     """A function that retreats to the previous level"""
+    bg = RED
     global level
     level -= 1
 
@@ -91,21 +107,42 @@ def mousebuttondown(level):
         for button in level2_buttons:
             if button.rect.collidepoint(pos):
                 button.call_back()
+    elif level == 3:
+        for button in level3_buttons:
+            if button.rect.collidepoint(pos):
+                button.call_back()
+def play_music():
+    pygame.mixer.music.unpause()
+def stop_music():
+    pygame.mixer.music.pause()
 
 level = 1
+
 carryOn = True
 clock = pygame.time.Clock()
 
-#create button objects and store in buttons list
-button_01 = Button("Next", (SCREENWIDTH/2, SCREENHEIGHT/3), my_next_function)
-button_02 = Button("Previous", (SCREENWIDTH/2, SCREENHEIGHT/3), my_previous_function)
-button_03 = Button("Quit", (SCREENWIDTH/2, SCREENHEIGHT*2/3), my_quit_function, bg=(50, 200, 20))
+#create button objects
+fontTitle = pygame.font.Font('freesansbold.ttf', 40)
+textSurfaceTitle = fontTitle.render('MQ Enterprise!', True, WHITE) 
+textRectTitle = textSurfaceTitle.get_rect()
+textRectTitle.center = (400,50)  
+
+
+
+button_PLAY = Button("PLAY", (SCREENWIDTH/5, SCREENHEIGHT/4), my_play, bg=RED)
+button_Previous = Button("Previous", (SCREENWIDTH/2, SCREENHEIGHT/4), my_previous_function,bg=RED)
+button_SETTINGS = Button("SETTINGS", (SCREENWIDTH/5, SCREENHEIGHT*2/4),my_next_function, bg=GREEN)
+button_QUIT = Button("QUIT", (SCREENWIDTH/5, SCREENHEIGHT*3/4), my_quit_function, bg=Blue)
+button_ON = Button("ON", (SCREENWIDTH/2, SCREENHEIGHT/4), play_music,bg=GREEN)
+button_OFF= Button("OFF", (SCREENWIDTH/2, SCREENHEIGHT*2/4),stop_music, bg=GREEN)
+button_Previous2 = Button("Previous", (SCREENWIDTH/2, SCREENHEIGHT*3/4), my_previous_function,bg=RED)
 
 #arrange button groups depending on level
-level1_buttons = [button_01, button_03]
-level2_buttons = [button_02, button_03]
+level1_buttons = [button_PLAY,button_SETTINGS, button_QUIT]
+level2_buttons = [button_ON,button_OFF,button_Previous2]
 
 #---------Main Program Loop----------
+screen.blit(background, (0, 0))
 while carryOn:
     # --- Main event loop ---
     for event in pygame.event.get(): # Player did something
@@ -117,9 +154,12 @@ while carryOn:
     # --- Game logic goes here
 
     # --- Draw code goes here
+    screen.fill(WHITE)
+    screen.blit(background, (0, 0))
+    screen.blit(textSurfaceTitle,textRectTitle)
 
     # Clear the screen to white
-    screen.fill(WHITE)
+    
 
     # Draw buttons
     if level == 1:
@@ -127,6 +167,9 @@ while carryOn:
             button.draw()
     elif level == 2:
         for button in level2_buttons:
+            button.draw()
+    elif level == 3:
+        for button in level3_buttons:
             button.draw()
 
     # Update the screen with queued shapes
@@ -136,3 +179,4 @@ while carryOn:
     clock.tick(60)
 
 pygame.quit()
+
