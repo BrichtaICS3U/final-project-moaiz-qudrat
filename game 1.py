@@ -4,8 +4,10 @@
 import pygame, sys
 pygame.init()
 
-background = pygame.image.load("//ad.ocdsb.ca/studenthome/6/S331389056/computer science 2018/Summative game/Supernova-Hunters-800x533.png")
+background = pygame.image.load("Supernova-Hunters-800x533.png")
+RocketImage = pygame.image.load("rocket.png")
 # Define some colours
+
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (177, 227, 102)
@@ -14,9 +16,11 @@ RED = (234, 53, 70)
 BRIGHT_RED = (241,126,137)
 BRIGHT_Blue = (135,212,223)
 Blue = (67,188,205)
+Jibril = (88,88,79)
+
 
 SCREENWIDTH = 800
-SCREENHEIGHT = 533
+SCREENHEIGHT = 500
 size = (SCREENWIDTH, SCREENHEIGHT)
 screen = pygame.display.set_mode(size)
 
@@ -130,8 +134,8 @@ textRectTitle.center = (400,50)
 
 
 button_PLAY = Button("PLAY", (SCREENWIDTH/5, SCREENHEIGHT/4), my_play, bg=RED)
-button_Previous = Button("Previous", (SCREENWIDTH/2, SCREENHEIGHT/4), my_previous_function,bg=RED)
-button_SETTINGS = Button("SETTINGS", (SCREENWIDTH/5, SCREENHEIGHT*2/4),my_next_function, bg=GREEN)
+button_Previous = Button("PREVIOUS", (SCREENWIDTH/2, SCREENHEIGHT/4), my_previous_function,bg=RED)
+button_SETTINGS = Button("SOUND", (SCREENWIDTH/5, SCREENHEIGHT*2/4),my_next_function, bg=GREEN)
 button_QUIT = Button("QUIT", (SCREENWIDTH/5, SCREENHEIGHT*3/4), my_quit_function, bg=Blue)
 button_ON = Button("ON", (SCREENWIDTH/2, SCREENHEIGHT/4), play_music,bg=GREEN)
 button_OFF= Button("OFF", (SCREENWIDTH/2, SCREENHEIGHT*2/4),stop_music, bg=GREEN)
@@ -142,7 +146,8 @@ level1_buttons = [button_PLAY,button_SETTINGS, button_QUIT]
 level2_buttons = [button_ON,button_OFF,button_Previous2]
 
 #---------Main Program Loop----------
-screen.blit(background, (0, 0))
+
+
 while carryOn:
     # --- Main event loop ---
     for event in pygame.event.get(): # Player did something
@@ -156,6 +161,7 @@ while carryOn:
     # --- Draw code goes here
     screen.fill(WHITE)
     screen.blit(background, (0, 0))
+    screen.blit(RocketImage, (400,100))
     screen.blit(textSurfaceTitle,textRectTitle)
 
     # Clear the screen to white
