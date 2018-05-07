@@ -1,6 +1,6 @@
 # Menu template with button class and basic menu navigation
 # Adapted from http://www.dreamincode.net/forums/topic/401541-buttons-and-sliders-in-pygame/
-
+from rocketclass import Rocket
 import pygame, sys
 pygame.init()
 
@@ -23,7 +23,6 @@ SCREENWIDTH = 800
 SCREENHEIGHT = 500
 size = (SCREENWIDTH, SCREENHEIGHT)
 screen = pygame.display.set_mode(size)
-
 
 
 #pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=4096)
@@ -87,7 +86,8 @@ def my_next_function():
     level += 1
 
 def my_play():
-    print("Play")
+    global level
+    level += 2
     
 def my_previous_function():
     """A function that retreats to the previous level"""
@@ -121,7 +121,6 @@ def stop_music():
     pygame.mixer.music.pause()
 
 level = 1
-
 carryOn = True
 clock = pygame.time.Clock()
 
@@ -137,14 +136,14 @@ button_PLAY = Button("PLAY", (SCREENWIDTH/5, SCREENHEIGHT/4), my_play, bg=RED)
 button_Previous = Button("PREVIOUS", (SCREENWIDTH/2, SCREENHEIGHT/4), my_previous_function,bg=RED)
 button_SETTINGS = Button("SOUND", (SCREENWIDTH/5, SCREENHEIGHT*2/4),my_next_function, bg=GREEN)
 button_QUIT = Button("QUIT", (SCREENWIDTH/5, SCREENHEIGHT*3/4), my_quit_function, bg=Blue)
-button_ON = Button("ON", (SCREENWIDTH/2, SCREENHEIGHT/4), play_music,bg=GREEN)
-button_OFF= Button("OFF", (SCREENWIDTH/2, SCREENHEIGHT*2/4),stop_music, bg=GREEN)
-button_Previous2 = Button("Previous", (SCREENWIDTH/2, SCREENHEIGHT*3/4), my_previous_function,bg=RED)
+button_ON = Button("ON", (SCREENWIDTH/5, SCREENHEIGHT/4), play_music,bg=GREEN)
+button_OFF= Button("OFF", (SCREENWIDTH/5, SCREENHEIGHT*2/4),stop_music, bg=GREEN)
+button_Previous2 = Button("Previous", (SCREENWIDTH/5, SCREENHEIGHT*3/4), my_previous_function,bg=RED)
 
 #arrange button groups depending on level
 level1_buttons = [button_PLAY,button_SETTINGS, button_QUIT]
 level2_buttons = [button_ON,button_OFF,button_Previous2]
-
+level3_buttons = []
 #---------Main Program Loop----------
 
 
