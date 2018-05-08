@@ -1,23 +1,29 @@
 import pygame
-Rocket1 = ("rocket.png")
+
+WHITE = (255, 255, 255)
+
 class Rocket(pygame.sprite.Sprite):
 
-    def __init__(self,color,width,height,speed):
+    def __init__(self,picture,width,height,speed):
 
         super().__init__()
 
-        self.image = pygame.Surface([width, height])
-        self.image.fill(Rocket1)
-        self.image.set_colorkey(Rocket1)
+        self.image = picture
+        #resize image to width, height
+        self.rect = self.image.get_rect()
+        #self.image.set_colorkey(Rocket1)
 
         self.width = width
         self.height =height
-        self.color = color
+        #self.color = color
         self.speed = speed
 
-        pygame.draw.rect(self.image, self.color, [0,0, self.width, self.height])
+        #pygame.draw.rect(self.image, WHITE, [0,0, self.width, self.height])
 
-        self.rect = self.image.get_rect()
+        #self.rect = self.image.get_rect()
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
 
     def moveRight(self, pixels):
         self.rect.x += pixels
@@ -35,6 +41,7 @@ class Rocket(pygame.sprite.Sprite):
         self.speed = speed
  
     def repaint(self, color):
-        self.color = color
-        pygame.draw.rect(self.image, self.color, [0, 0, self.width, self.height])
+        print("repaint")
+        #self.color = color
+        #pygame.draw.rect(self.image, self.color, [0, 0, self.width, self.height])
 

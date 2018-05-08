@@ -24,6 +24,9 @@ SCREENHEIGHT = 500
 size = (SCREENWIDTH, SCREENHEIGHT)
 screen = pygame.display.set_mode(size)
 
+ALL_sprites_lists = pygame.sprite.Group()
+player = Rocket(RocketImage,30,40,5)
+ALL_sprites_lists.add(player)
 
 #pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=4096)
 #pygame.mixer.music.load()
@@ -88,12 +91,21 @@ def my_next_function():
 def my_play():
     global level
     level += 2
+
+def my_INSTRUCTIONS():
+    global level
+    level += 3
     
 def my_previous_function():
     """A function that retreats to the previous level"""
     bg = RED
     global level
-    level -= 1
+    if level == 3:
+        level -=2
+    elif level == 4:
+        level -=3
+    else:
+        level -= 1
 
 def my_quit_function():
     """A function that will quit the game and close the pygame window"""
@@ -115,6 +127,11 @@ def mousebuttondown(level):
         for button in level3_buttons:
             if button.rect.collidepoint(pos):
                 button.call_back()
+    elif level == 4:
+        for button in level3_buttons:
+            if button.rect.collidepoint(pos):
+                button.call_back()
+                
 def play_music():
     pygame.mixer.music.unpause()
 def stop_music():
@@ -125,25 +142,26 @@ carryOn = True
 clock = pygame.time.Clock()
 
 #create button objects
-fontTitle = pygame.font.Font('freesansbold.ttf', 40)
+fontTitle = pygame.font.Font('freesansbold.ttf', 50)
 textSurfaceTitle = fontTitle.render('MQ Enterprise!', True, WHITE) 
 textRectTitle = textSurfaceTitle.get_rect()
 textRectTitle.center = (400,50)  
 
 
 
-button_PLAY = Button("PLAY", (SCREENWIDTH/5, SCREENHEIGHT/4), my_play, bg=RED)
-button_Previous = Button("PREVIOUS", (SCREENWIDTH/2, SCREENHEIGHT/4), my_previous_function,bg=RED)
-button_SETTINGS = Button("SOUND", (SCREENWIDTH/5, SCREENHEIGHT*2/4),my_next_function, bg=GREEN)
-button_QUIT = Button("QUIT", (SCREENWIDTH/5, SCREENHEIGHT*3/4), my_quit_function, bg=Blue)
+button_PLAY = Button("PLAY", (SCREENWIDTH/6, SCREENHEIGHT/4-50), my_play, bg=RED)
+button_INSTRUCTIONS = Button("INSTRUCTIONS",(SCREENWIDTH/6, SCREENHEIGHT*2/4-50),my_INSTRUCTIONS, bg=RED)
+button_SETTINGS = Button("SOUND", (SCREENWIDTH/6, SCREENHEIGHT*3/4-50),my_next_function, bg=GREEN)
+button_QUIT = Button("QUIT", (SCREENWIDTH/6, SCREENHEIGHT*4/4-50), my_quit_function, bg=Blue)
 button_ON = Button("ON", (SCREENWIDTH/5, SCREENHEIGHT/4), play_music,bg=GREEN)
 button_OFF= Button("OFF", (SCREENWIDTH/5, SCREENHEIGHT*2/4),stop_music, bg=GREEN)
 button_Previous2 = Button("Previous", (SCREENWIDTH/5, SCREENHEIGHT*3/4), my_previous_function,bg=RED)
 
 #arrange button groups depending on level
-level1_buttons = [button_PLAY,button_SETTINGS, button_QUIT]
+level1_buttons = [button_PLAY,button_INSTRUCTIONS,button_SETTINGS, button_QUIT]
 level2_buttons = [button_ON,button_OFF,button_Previous2]
-level3_buttons = []
+level3_buttons = [button_Previous2]
+level4_buttons = [button_Previous2]
 #---------Main Program Loop----------
 
 
@@ -162,6 +180,7 @@ while carryOn:
     screen.blit(background, (0, 0))
     screen.blit(RocketImage, (400,100))
     screen.blit(textSurfaceTitle,textRectTitle)
+    
 
     # Clear the screen to white
     
@@ -174,8 +193,15 @@ while carryOn:
         for button in level2_buttons:
             button.draw()
     elif level == 3:
+        screen.fill(WHITE)
         for button in level3_buttons:
+            ALL_sprites_lists.draw(screen)
+            button.draw()      
+    elif level == 4:
+        screen.fill(WHITE)
+        for button in level4_buttons:
             button.draw()
+            
 
     # Update the screen with queued shapes
     pygame.display.flip()
