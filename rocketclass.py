@@ -18,13 +18,15 @@ class Rocket(pygame.sprite.Sprite):
         #self.color = color
         self.speed = speed
 
+        speed == 5
+
         #pygame.draw.rect(self.image, WHITE, [0,0, self.width, self.height])
 
         #self.rect = self.image.get_rect()
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
-
+        
     def moveRight(self, pixels):
         self.rect.x += pixels
 
@@ -32,10 +34,10 @@ class Rocket(pygame.sprite.Sprite):
         self.rect.x -= pixels
 
     def moveForward(self, speed):
-        self.rect.y -= self.speed * speed / 20
+        self.rect.y -= speed
  
     def moveBackward(self, speed):
-        self.rect.y += self.speed * speed / 20
+        self.rect.x += self.speed * speed / 20
  
     def changeSpeed(self, speed):
         self.speed = speed

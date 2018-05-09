@@ -5,6 +5,7 @@ import pygame, sys
 pygame.init()
 
 background = pygame.image.load("Supernova-Hunters-800x533.png")
+Rocketbg = pygame.image.load("rocketbg.png")
 RocketImage = pygame.image.load("rocket.png")
 # Define some colours
 
@@ -18,7 +19,7 @@ BRIGHT_Blue = (135,212,223)
 Blue = (67,188,205)
 Jibril = (88,88,79)
 
-
+speed = 1
 SCREENWIDTH = 800
 SCREENHEIGHT = 500
 size = (SCREENWIDTH, SCREENHEIGHT)
@@ -28,6 +29,8 @@ ALL_sprites_lists = pygame.sprite.Group()
 player = Rocket(RocketImage,30,40,5)
 ALL_sprites_lists.add(player)
 
+
+            
 #pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=4096)
 #pygame.mixer.music.load()
 #pygame.mixer.music.play(-1)
@@ -172,13 +175,24 @@ while carryOn:
             carryOn = False
         elif event.type == pygame.MOUSEBUTTONDOWN: # Player clicked the mouse
             mousebuttondown(level)
-
+            
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        player.moveLeft(5)
+    if keys[pygame.K_RIGHT]:
+        player.moveRight(5)
+    if keys[pygame.K_UP]:
+            speed += 0.05
+    if keys[pygame.K_DOWN]:
+            speed -= 0.05
+            
+            
     # --- Game logic goes here
 
     # --- Draw code goes here
     screen.fill(WHITE)
     screen.blit(background, (0, 0))
-    screen.blit(RocketImage, (400,100))
+    screen.blit(Rocketbg, (400,100))
     screen.blit(textSurfaceTitle,textRectTitle)
     
 
