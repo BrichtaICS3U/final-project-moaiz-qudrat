@@ -7,6 +7,9 @@ pygame.init()
 background = pygame.image.load("Supernova-Hunters-800x533.png")
 Rocketbg = pygame.image.load("rocketbg.png")
 RocketImage = pygame.image.load("rocket.png")
+asteroid = pygame.image.load("Asteroid.png")
+path1 = pygame.image.load("path.png")
+arrows = pygame.image.load("arrow.png")
 # Define some colours
 
 BLACK = (0, 0, 0)
@@ -178,21 +181,22 @@ while carryOn:
             
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
-        player.moveLeft(5)
+        player.moveLeft(10)
     if keys[pygame.K_RIGHT]:
-        player.moveRight(5)
+        player.moveRight(10)
     if keys[pygame.K_UP]:
-            speed += 0.05
+        player.Thurst(10)
     if keys[pygame.K_DOWN]:
-            speed -= 0.05
+        player.moveBackward(10)
             
             
     # --- Game logic goes here
 
     # --- Draw code goes here
     screen.fill(WHITE)
+    screen.blit(path1,(0,0))
     screen.blit(background, (0, 0))
-    screen.blit(Rocketbg, (400,100))
+    screen.blit(Rocketbg, (300,50))
     screen.blit(textSurfaceTitle,textRectTitle)
     
 
@@ -203,20 +207,40 @@ while carryOn:
     if level == 1:
         for button in level1_buttons:
             button.draw()
+            
     elif level == 2:
         for button in level2_buttons:
             button.draw()
+            
     elif level == 3:
-        screen.fill(WHITE)
+        screen.fill(BLACK)
+        screen.blit(path1,(0,0))
         for button in level3_buttons:
             ALL_sprites_lists.draw(screen)
-            button.draw()      
-    elif level == 4:
-        screen.fill(WHITE)
-        for button in level4_buttons:
             button.draw()
             
+    elif level == 4:
+        screen.fill(WHITE)
+        screen.blit(arrows,(20,220))
+        for button in level4_buttons:
+            button.draw()
+        font = pygame.font.Font('freesansbold.ttf', 30)
+        text1 = font.render('INSTRUCTIONS',1,BLACK)
+        screen.blit(text1,(300,20))
+        
+        font2 = pygame.font.Font('freesansbold.ttf', 20)
+        text2 = font2.render('In this game the objective is to reach the wormhole',1,BLACK)
+        screen.blit(text2,(20,100))
+        
+        text3 = font2.render('that is surrounded by orbiting meteorids. The player must follow',1,BLACK)
+        screen.blit(text3,(20,130))
 
+        text4 = font2.render('the designated path without touching the meteorids. If the players rocket',1,BLACK)
+        screen.blit(text4,(20,160))
+
+        text5 = font2.render('touches the path or the meteorids they will have to restart from the beginning',1,BLACK)
+        screen.blit(text5,(20,190))
+            
     # Update the screen with queued shapes
     pygame.display.flip()
 
