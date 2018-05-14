@@ -1,10 +1,11 @@
-import pygame
+
+import pygame, math
 
 WHITE = (255, 255, 255)
 
 class Rocket(pygame.sprite.Sprite):
 
-    def __init__(self,picture,width,height,speed):
+    def __init__(self,picture,width,height,speed,angle,turnRate):
 
         super().__init__()
 
@@ -17,27 +18,43 @@ class Rocket(pygame.sprite.Sprite):
         self.height =height
         #self.color = color
         self.speed = speed
+        self.original = picture
+        self.angle = angle
+        
+        self.turnRate = turnRate
 
         speed == 10
 
         #pygame.draw.rect(self.image, WHITE, [0,0, self.width, self.height])
 
         #self.rect = self.image.get_rect()
+    def rotRight(self):
+        self.angle -= self.turnRate
+        if self.speed == 0:
+            self.speed = self.turnRate
+        while self.angle < 0:
+            self.angle += 360
+        self.image = pygame.transform.rotate(self.original,self.angle)
+
+    def rotLeft(self):
+        self.angle += self.turnRate
+        if self.speed == 0:
+            self.speed = self.turnRate
+        while self.angle < 0:
+            self.angle -= 360
+        self.image = pygame.transform.rotate(self.original,self.angle)
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
         
-    def moveRight(self, pixels):
-        self.rect.x += pixels
-
-    def moveLeft (self, pixels):
-        self.rect.x -= pixels
 
     def Thurst(self, pixels):
-        self.rect.y -= pixels
+        self.rect.y -= math.cos(math.radians((self.angle)))*10
+        self.rect.x -= math.sin(math.radians((self.angle)))*10
  
     def moveBackward(self, pixels):
-        self.rect.y += pixels
+        self.rect.y += math.cos(math.radians((self.angle)))*10
+        self.rect.x += math.sin(math.radians((self.angle)))*10
  
     def changeSpeed(self, speed):
         self.speed = speed

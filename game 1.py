@@ -14,6 +14,7 @@ arrows = pygame.image.load("arrow.png")
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+
 GREEN = (177, 227, 102)
 BRIGHT_GREEN = (205, 237, 157)
 RED = (234, 53, 70)
@@ -29,7 +30,7 @@ size = (SCREENWIDTH, SCREENHEIGHT)
 screen = pygame.display.set_mode(size)
 
 ALL_sprites_lists = pygame.sprite.Group()
-player = Rocket(RocketImage,30,40,5)
+player = Rocket(RocketImage,30,40,5,0,10)
 ALL_sprites_lists.add(player)
 
 
@@ -157,8 +158,8 @@ textRectTitle.center = (400,50)
 
 button_PLAY = Button("PLAY", (SCREENWIDTH/6, SCREENHEIGHT/4-50), my_play, bg=RED)
 button_INSTRUCTIONS = Button("INSTRUCTIONS",(SCREENWIDTH/6, SCREENHEIGHT*2/4-50),my_INSTRUCTIONS, bg=RED)
-button_SETTINGS = Button("SOUND", (SCREENWIDTH/6, SCREENHEIGHT*3/4-50),my_next_function, bg=GREEN)
-button_QUIT = Button("QUIT", (SCREENWIDTH/6, SCREENHEIGHT*4/4-50), my_quit_function, bg=Blue)
+button_SETTINGS = Button("SOUND", (SCREENWIDTH/6, SCREENHEIGHT*3/4-50),my_next_function, bg=RED)
+button_QUIT = Button("QUIT", (SCREENWIDTH/6, SCREENHEIGHT*4/4-50), my_quit_function, bg=RED)
 button_ON = Button("ON", (SCREENWIDTH/5, SCREENHEIGHT/4), play_music,bg=GREEN)
 button_OFF= Button("OFF", (SCREENWIDTH/5, SCREENHEIGHT*2/4),stop_music, bg=GREEN)
 button_Previous2 = Button("Previous", (SCREENWIDTH/5, SCREENHEIGHT*3/4), my_previous_function,bg=RED)
@@ -181,9 +182,9 @@ while carryOn:
             
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
-        player.moveLeft(10)
+        player.rotLeft()
     if keys[pygame.K_RIGHT]:
-        player.moveRight(10)
+        player.rotRight()
     if keys[pygame.K_UP]:
         player.Thurst(10)
     if keys[pygame.K_DOWN]:
@@ -245,7 +246,7 @@ while carryOn:
     pygame.display.flip()
 
     # --- Limit to 60 frames per second
-    clock.tick(60)
+    clock.tick(200)
 
 pygame.quit()
 
