@@ -6,7 +6,7 @@ pygame.init()
 
 background = pygame.image.load("Supernova-Hunters-800x533.png")
 Rocketbg = pygame.image.load("rocketbg.png")
-RocketImage = pygame.image.load("rocket.png")
+RocketImage = pygame.transform.scale(Rocketbg,(41,62))
 asteroid = pygame.image.load("Asteroid.png")
 path1 = pygame.image.load("path.png")
 arrows = pygame.image.load("arrow.png")
@@ -14,14 +14,12 @@ arrows = pygame.image.load("arrow.png")
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-
 GREEN = (177, 227, 102)
 BRIGHT_GREEN = (205, 237, 157)
 RED = (234, 53, 70)
 BRIGHT_RED = (241,126,137)
 BRIGHT_Blue = (135,212,223)
 Blue = (67,188,205)
-Jibril = (88,88,79)
 
 speed = 1
 SCREENWIDTH = 800
@@ -80,7 +78,7 @@ class Button():
         self.bg = self.color
         pos = pygame.mouse.get_pos()
         if self.rect.collidepoint(pos):
-            self.bg = BRIGHT_RED  # mouseover color
+            self.bg = BRIGHT_RED
 
     def call_back(self):
         """Runs a function when clicked"""
@@ -195,6 +193,7 @@ while carryOn:
 
     # --- Draw code goes here
     screen.fill(WHITE)
+    screen.fill(BLACK)
     screen.blit(path1,(0,0))
     screen.blit(background, (0, 0))
     screen.blit(Rocketbg, (300,50))
@@ -217,8 +216,8 @@ while carryOn:
         screen.fill(BLACK)
         screen.blit(path1,(0,0))
         for button in level3_buttons:
-            ALL_sprites_lists.draw(screen)
             button.draw()
+        ALL_sprites_lists.draw(screen)
             
     elif level == 4:
         screen.fill(WHITE)
@@ -241,6 +240,18 @@ while carryOn:
 
         text5 = font2.render('touches the path or the meteorids they will have to restart from the beginning',1,BLACK)
         screen.blit(text5,(20,190))
+
+        text6 = font2.render('Top arrow key is thrust',1,BLACK)
+        screen.blit(text6,(300,250))
+
+        text7 = font2.render('Down arrow key moves rocket backwards',1,BLACK)
+        screen.blit(text7,(300,275))
+
+        text8 = font2.render('Right arrow key rotates rocket to the right',1,BLACK)
+        screen.blit(text8,(300,300))
+
+        text9 = font2.render('Left arrow key rotates the rocket to the left',1,BLACK)
+        screen.blit(text9,(300,325))
             
     # Update the screen with queued shapes
     pygame.display.flip()
