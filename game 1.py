@@ -1,14 +1,16 @@
 # Menu template with button class and basic menu navigation
 # Adapted from http://www.dreamincode.net/forums/topic/401541-buttons-and-sliders-in-pygame/
 from rocketclass import Rocket
+from Asteroid import Asteroid1
 import pygame, sys
 pygame.init()
 
 background = pygame.image.load("Supernova-Hunters-800x533.png")
 Rocketbg = pygame.image.load("rocketbg.png")
 RocketImage = pygame.transform.scale(Rocketbg,(41,62))
-asteroid = pygame.image.load("Asteroid.png")
-path1 = pygame.image.load("path.png")
+asteroid = pygame.image.load("asteroid-icon.png")
+ast= pygame.transform.scale(asteroid, (50,50))
+#path1 = pygame.image.load("path.png")
 arrows = pygame.image.load("arrow.png")
 # Define some colours
 
@@ -27,8 +29,13 @@ SCREENHEIGHT = 500
 size = (SCREENWIDTH, SCREENHEIGHT)
 screen = pygame.display.set_mode(size)
 
+all_sprites_lists = pygame.sprite.Group()
+Obs = Asteroid1(ast, 30, 50)
+all_sprites_lists.add(Obs)
+
 ALL_sprites_lists = pygame.sprite.Group()
 player = Rocket(RocketImage,30,40,5,0,10)
+
 ALL_sprites_lists.add(player)
 
 
@@ -194,9 +201,10 @@ while carryOn:
     # --- Draw code goes here
     screen.fill(WHITE)
     screen.fill(BLACK)
-    screen.blit(path1,(0,0))
+    #screen.blit(path1,(0,0))
     screen.blit(background, (0, 0))
     screen.blit(Rocketbg, (300,50))
+    screen.blit(RocketImage, (600,400))
     screen.blit(textSurfaceTitle,textRectTitle)
     
 
@@ -214,10 +222,11 @@ while carryOn:
             
     elif level == 3:
         screen.fill(BLACK)
-        screen.blit(path1,(0,0))
+        #screen.blit(path1,(0,0))
         for button in level3_buttons:
             button.draw()
         ALL_sprites_lists.draw(screen)
+        all_sprites_lists.draw(screen)
             
     elif level == 4:
         screen.fill(WHITE)
