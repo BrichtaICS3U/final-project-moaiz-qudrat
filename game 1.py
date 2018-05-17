@@ -31,11 +31,58 @@ screen = pygame.display.set_mode(size)
 
 all_sprites_lists = pygame.sprite.Group()
 Obs = Asteroid1(ast, 30, 50)
-all_sprites_lists.add(Obs)
+Obs1 = Asteroid1(ast, 30, 50)
+Obs2 = Asteroid1(ast, 30, 50)
+Obs3 = Asteroid1(ast, 30, 50)
+Obs4 = Asteroid1(ast, 30, 50)
+Obs5 = Asteroid1(ast, 30, 50)
+Obs6 = Asteroid1(ast, 30, 50)
+Obs7 = Asteroid1(ast, 30, 50)
+Obs8 = Asteroid1(ast, 30, 50)
+Obs9 = Asteroid1(ast, 30, 50)
+Obs10 = Asteroid1(ast, 30, 50)
+
+Obs.rect.x = 500
+Obs.rect.y = 380
+
+Obs1.rect.x =500
+Obs1.rect.y =300
+
+Obs2.rect.x =480
+Obs2.rect.y =260
+
+Obs3.rect.x =400
+Obs3.rect.y =300
+
+Obs4.rect.x =400
+Obs4.rect.y =380
+
+Obs5.rect.x =380
+Obs5.rect.y =270
+
+Obs6.rect.x =360
+Obs6.rect.y =230
+
+Obs7.rect.x =320
+Obs7.rect.y =200
+
+Obs8.rect.x =430
+Obs8.rect.y =200
+
+Obs9.rect.x =410
+Obs9.rect.y =170
+
+
+Obs10.rect.x =380
+Obs10.rect.y =140
+
+all_sprites_lists.add(Obs,Obs1,Obs2,Obs3,Obs4,Obs5,Obs6,Obs7,Obs8,Obs9,Obs10)
+
 
 ALL_sprites_lists = pygame.sprite.Group()
 player = Rocket(RocketImage,30,40,5,0,10)
-
+player.rect.x = 470
+player.rect.y = 400
 ALL_sprites_lists.add(player)
 
 
