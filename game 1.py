@@ -14,6 +14,7 @@ ast= pygame.transform.scale(asteroid, (50,50))
 arrows = pygame.image.load("arrow.png")
 # Define some colours
 
+
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (177, 227, 102)
