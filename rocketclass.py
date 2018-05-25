@@ -9,9 +9,13 @@ class Rocket(pygame.sprite.Sprite):
 
         super().__init__()
 
+        
         self.image = picture
+        self.mask = pygame.mask.from_surface(self.image)
         #resize image to width, height
         self.rect = self.image.get_rect()
+        self.radius = 15
+        pygame.image = (self.image, self.rect.center, self.radius)
         #self.image.set_colorkey(Rocket1)
 
         self.width = width

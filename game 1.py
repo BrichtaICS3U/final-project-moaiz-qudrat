@@ -1,8 +1,8 @@
-# Menu template with button class and basic menu navigation
-# Adapted from http://www.dreamincode.net/forums/topic/401541-buttons-and-sliders-in-pygame/
 from rocketclass import Rocket
 from Asteroid import Asteroid1
 import pygame, sys
+from pygame.locals import *
+ 
 pygame.init()
 
 background = pygame.image.load("Supernova-Hunters-800x533.png")
@@ -10,11 +10,11 @@ Rocketbg = pygame.image.load("rocketbg.png")
 RocketImage = pygame.transform.scale(Rocketbg,(41,62))
 asteroid = pygame.image.load("asteroid-icon.png")
 ast= pygame.transform.scale(asteroid, (50,50))
-#path1 = pygame.image.load("path.png")
 arrows = pygame.image.load("arrow.png")
-# Define some colours
-
-
+starbg = pygame.image.load("stars-in-night-sky.png")
+wormhole = pygame.image.load("wormhole.png")
+wormhole1 = pygame.transform.scale(wormhole,(70,70))
+    
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (177, 227, 102)
@@ -24,24 +24,26 @@ BRIGHT_RED = (241,126,137)
 BRIGHT_Blue = (135,212,223)
 Blue = (67,188,205)
 
+
 speed = 1
 SCREENWIDTH = 800
 SCREENHEIGHT = 500
 size = (SCREENWIDTH, SCREENHEIGHT)
 screen = pygame.display.set_mode(size)
 
-all_sprites_lists = pygame.sprite.Group()
-Obs = Asteroid1(ast, 30, 50)
-Obs1 = Asteroid1(ast, 30, 50)
-Obs2 = Asteroid1(ast, 30, 50)
-Obs3 = Asteroid1(ast, 30, 50)
-Obs4 = Asteroid1(ast, 30, 50)
-Obs5 = Asteroid1(ast, 30, 50)
-Obs6 = Asteroid1(ast, 30, 50)
-Obs7 = Asteroid1(ast, 30, 50)
-Obs8 = Asteroid1(ast, 30, 50)
-Obs9 = Asteroid1(ast, 30, 50)
-Obs10 = Asteroid1(ast, 30, 50)
+ASTEROID_sprites_lists = pygame.sprite.Group()
+
+Obs = Asteroid1(ast, 10, 10)
+Obs1 = Asteroid1(ast, 10, 10)
+Obs2 = Asteroid1(ast, 10, 10)
+Obs3 = Asteroid1(ast, 10, 10)
+Obs4 = Asteroid1(ast, 10, 10)
+Obs5 = Asteroid1(ast, 10, 10)
+Obs6 = Asteroid1(ast, 10, 10)
+Obs7 = Asteroid1(ast, 10, 10)
+Obs8 = Asteroid1(ast, 10, 10)
+Obs9 = Asteroid1(ast, 10, 10)
+Obs10 = Asteroid1(ast, 10, 10)
 
 Obs.rect.x = 500
 Obs.rect.y = 380
@@ -77,14 +79,15 @@ Obs9.rect.y =170
 Obs10.rect.x =380
 Obs10.rect.y =140
 
-all_sprites_lists.add(Obs,Obs1,Obs2,Obs3,Obs4,Obs5,Obs6,Obs7,Obs8,Obs9,Obs10)
+ASTEROID_sprites_lists.add(Obs,Obs1,Obs2,Obs3,Obs4,Obs5,Obs6,Obs7,Obs8,Obs9,Obs10)
 
 
-ALL_sprites_lists = pygame.sprite.Group()
-player = Rocket(RocketImage,30,40,5,0,10)
-player.rect.x = 470
+
+ROCKET_sprites_lists = pygame.sprite.Group()
+player = Rocket(RocketImage,1,1,5,0,5)
+player.rect.x = 460
 player.rect.y = 400
-ALL_sprites_lists.add(player)
+ROCKET_sprites_lists.add(player)
 
 
             
@@ -106,9 +109,9 @@ class Button():
        font_size = size of font
     """
     def __init__(self, txt, location, action, bg=WHITE, fg=BLACK, size=(100, 40), font_name="Segoe Print", font_size=16):
-        self.color = bg  # the static (normal) color
-        self.bg = bg  # actual background color, can change on mouseover
-        self.fg = fg  # text color
+        self.color = bg 
+        self.bg = bg  
+        self.fg = fg  
         self.size = size
 
         self.font = pygame.font.SysFont(font_name, font_size)
@@ -151,10 +154,14 @@ def my_next_function():
 def my_play():
     global level
     level += 2
-
+    
 def my_INSTRUCTIONS():
     global level
     level += 3
+
+def my_name():
+    global level
+    level += 4
     
 def my_previous_function():
     """A function that retreats to the previous level"""
@@ -164,6 +171,9 @@ def my_previous_function():
         level -=2
     elif level == 4:
         level -=3
+        
+    elif level == 5:
+        level -=4
     else:
         level -= 1
 
@@ -188,7 +198,11 @@ def mousebuttondown(level):
             if button.rect.collidepoint(pos):
                 button.call_back()
     elif level == 4:
-        for button in level3_buttons:
+        for button in level4_buttons:
+            if button.rect.collidepoint(pos):
+                button.call_back()
+    elif level == 5:
+        for button in level5_buttons:
             if button.rect.collidepoint(pos):
                 button.call_back()
                 
@@ -201,7 +215,7 @@ level = 1
 carryOn = True
 clock = pygame.time.Clock()
 
-#create button objects
+
 fontTitle = pygame.font.Font('freesansbold.ttf', 50)
 textSurfaceTitle = fontTitle.render('MQ Enterprise!', True, WHITE) 
 textRectTitle = textSurfaceTitle.get_rect()
@@ -209,7 +223,7 @@ textRectTitle.center = (400,50)
 
 
 
-button_PLAY = Button("PLAY", (SCREENWIDTH/6, SCREENHEIGHT/4-50), my_play, bg=RED)
+button_PLAY = Button("PLAY", (SCREENWIDTH/6, SCREENHEIGHT/4-50),my_play, bg=RED)
 button_INSTRUCTIONS = Button("INSTRUCTIONS",(SCREENWIDTH/6, SCREENHEIGHT*2/4-50),my_INSTRUCTIONS, bg=RED)
 button_SETTINGS = Button("SOUND", (SCREENWIDTH/6, SCREENHEIGHT*3/4-50),my_next_function, bg=RED)
 button_QUIT = Button("QUIT", (SCREENWIDTH/6, SCREENHEIGHT*4/4-50), my_quit_function, bg=RED)
@@ -242,14 +256,22 @@ while carryOn:
         player.Thurst(10)
     if keys[pygame.K_DOWN]:
         player.moveBackward(10)
-            
+
+    hits = pygame.sprite.spritecollide(player, ASTEROID_sprites_lists, False, pygame.sprite.collide_circle_ratio(0.95))
+    if hits:
+        print("you crashed")
+        carryOn = False
+  
+    
+        
             
     # --- Game logic goes here
 
     # --- Draw code goes here
     screen.fill(WHITE)
     screen.fill(BLACK)
-    #screen.blit(path1,(0,0))
+    screen.blit(wormhole1,(50,50))
+    screen.blit(starbg,(0,0))
     screen.blit(background, (0, 0))
     screen.blit(Rocketbg, (300,50))
     screen.blit(RocketImage, (600,400))
@@ -260,6 +282,7 @@ while carryOn:
     
 
     # Draw buttons
+    
     if level == 1:
         for button in level1_buttons:
             button.draw()
@@ -269,12 +292,12 @@ while carryOn:
             button.draw()
             
     elif level == 3:
-        screen.fill(BLACK)
-        #screen.blit(path1,(0,0))
+        screen.blit(starbg,(0,0))
+        screen.blit(wormhole1,(315,135))
         for button in level3_buttons:
             button.draw()
-        ALL_sprites_lists.draw(screen)
-        all_sprites_lists.draw(screen)
+        ROCKET_sprites_lists.draw(screen)
+        ASTEROID_sprites_lists.draw(screen)
             
     elif level == 4:
         screen.fill(WHITE)
@@ -309,12 +332,14 @@ while carryOn:
 
         text9 = font2.render('Left arrow key rotates the rocket to the left',1,BLACK)
         screen.blit(text9,(300,325))
+
             
+        
     # Update the screen with queued shapes
     pygame.display.flip()
 
     # --- Limit to 60 frames per second
-    clock.tick(200)
+    clock.tick(60)
 
 pygame.quit()
 
