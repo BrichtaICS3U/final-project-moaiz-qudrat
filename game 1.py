@@ -1,4 +1,5 @@
 from rocketclass import Rocket
+from Worm import WormHole
 from Asteroid import Asteroid1
 import pygame, sys
 from pygame.locals import *
@@ -12,25 +13,18 @@ asteroid = pygame.image.load("asteroid-icon.png")
 ast= pygame.transform.scale(asteroid, (50,50))
 arrows = pygame.image.load("arrow.png")
 starbg = pygame.image.load("stars-in-night-sky.png")
-wormhole = pygame.image.load("wormhole.png")
-wormhole1 = pygame.transform.scale(wormhole,(70,70))
+wormhole2 = pygame.image.load("wormhole.png")
+wormhole1 = pygame.transform.scale(wormhole2,(70,70))
     
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (177, 227, 102)
 BRIGHT_GREEN = (205, 237, 157)
-
-
-
-
-
-
-
-
 RED = (234, 53, 70)
 BRIGHT_RED = (241,126,137)
 BRIGHT_Blue = (135,212,223)
 Blue = (67,188,205)
+
 
 
 speed = 1
@@ -53,39 +47,6 @@ Obs8 = Asteroid1(ast, 10, 10)
 Obs9 = Asteroid1(ast, 10, 10)
 Obs10 = Asteroid1(ast, 10, 10)
 
-Obs.rect.x = 500
-Obs.rect.y = 380
-
-Obs1.rect.x =500
-Obs1.rect.y =300
-
-Obs2.rect.x =480
-Obs2.rect.y =260
-
-Obs3.rect.x =400
-Obs3.rect.y =300
-
-Obs4.rect.x =400
-Obs4.rect.y =380
-
-Obs5.rect.x =380
-Obs5.rect.y =270
-
-Obs6.rect.x =360
-Obs6.rect.y =230
-
-Obs7.rect.x =320
-Obs7.rect.y =200
-
-Obs8.rect.x =430
-Obs8.rect.y =200
-
-Obs9.rect.x =410
-Obs9.rect.y =170
-
-
-Obs10.rect.x =380
-Obs10.rect.y =140
 
 ASTEROID_sprites_lists.add(Obs,Obs1,Obs2,Obs3,Obs4,Obs5,Obs6,Obs7,Obs8,Obs9,Obs10)
 
@@ -97,7 +58,11 @@ player.rect.x = 460
 player.rect.y = 400
 ROCKET_sprites_lists.add(player)
 
-
+Worm_sprites_lists = pygame.sprite.Group()
+Worm2 = WormHole(wormhole1,70,70)
+Worm2.rect.x = 315
+Worm2.rect.y = 135
+Worm_sprites_lists.add(Worm2)
             
 #pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=4096)
 #pygame.mixer.music.load()
@@ -126,7 +91,6 @@ class Button():
         self.txt = txt
         self.txt_surf = self.font.render(self.txt, 1, self.fg)
         self.txt_rect = self.txt_surf.get_rect(center=[s//2 for s in self.size])
-
         self.surface = pygame.surface.Surface(size)
         self.rect = self.surface.get_rect(center=location)
 
@@ -167,9 +131,12 @@ def my_INSTRUCTIONS():
     global level
     level += 3
 
-def my_name():
+def my_next_level():
     global level
-    level += 4
+    if level == 3:
+        level += 2
+    else:
+        level += 1
     
 def my_previous_function():
     """A function that retreats to the previous level"""
@@ -238,11 +205,11 @@ button_QUIT = Button("QUIT", (SCREENWIDTH/6, SCREENHEIGHT*4/4-50), my_quit_funct
 button_ON = Button("ON", (SCREENWIDTH/5, SCREENHEIGHT/4), play_music,bg=GREEN)
 button_OFF= Button("OFF", (SCREENWIDTH/5, SCREENHEIGHT*2/4),stop_music, bg=GREEN)
 button_Previous2 = Button("Previous", (SCREENWIDTH/5, SCREENHEIGHT*3/4), my_previous_function,bg=RED)
-
+button_next_level = Button("Next level",(SCREENWIDTH*3/4, SCREENHEIGHT*3/4),my_next_level,bg=RED)
 #arrange button groups depending on level
 level1_buttons = [button_PLAY,button_INSTRUCTIONS,button_SETTINGS, button_QUIT]
 level2_buttons = [button_ON,button_OFF,button_Previous2]
-level3_buttons = [button_Previous2]
+level3_buttons = [button_Previous2,button_next_level]
 level4_buttons = [button_Previous2]
 #---------Main Program Loop----------
 
@@ -266,19 +233,20 @@ while carryOn:
         player.moveBackward(10)
 
     hits = pygame.sprite.spritecollide(player, ASTEROID_sprites_lists, False, pygame.sprite.collide_circle_ratio(0.95))
+    Win = pygame.sprite.spritecollide(player, Worm_sprites_lists, False, pygame.sprite.collide_circle_ratio(0.95))
     if hits:
         print("you crashed")
         carryOn = False
-  
+    elif Win:
+        print("You Won!") 
+        carryOn = False
     
-        
-            
+          
     # --- Game logic goes here
 
     # --- Draw code goes here
     screen.fill(WHITE)
     screen.fill(BLACK)
-    screen.blit(wormhole1,(50,50))
     screen.blit(starbg,(0,0))
     screen.blit(background, (0, 0))
     screen.blit(Rocketbg, (300,50))
@@ -295,18 +263,53 @@ while carryOn:
         for button in level1_buttons:
             button.draw()
             
-    elif level == 2:
+    elif level == 2:#settings
         for button in level2_buttons:
             button.draw()
             
-    elif level == 3:
+    elif level == 3:#game
         screen.blit(starbg,(0,0))
-        screen.blit(wormhole1,(315,135))
         for button in level3_buttons:
             button.draw()
         ROCKET_sprites_lists.draw(screen)
+        Obs.rect.x = 500
+        Obs.rect.y = 380
+
+        Obs1.rect.x =500
+        Obs1.rect.y =300
+
+        Obs2.rect.x =480
+        Obs2.rect.y =260
+
+        Obs3.rect.x =400
+        Obs3.rect.y =300
+
+        Obs4.rect.x =400
+        Obs4.rect.y =380
+
+        Obs5.rect.x =380
+        Obs5.rect.y =270
+
+        Obs6.rect.x =360
+        Obs6.rect.y =230
+
+        Obs7.rect.x =320
+        Obs7.rect.y =200
+
+        Obs8.rect.x =430
+        Obs8.rect.y =200
+
+
+        Obs9.rect.x =410
+        Obs9.rect.y =170
+
+
+        Obs10.rect.x =380
+        Obs10.rect.y =140
+
         ASTEROID_sprites_lists.draw(screen)
-            
+        Worm_sprites_lists.draw(screen)
+        
     elif level == 4:
         screen.fill(WHITE)
         screen.blit(arrows,(20,220))
@@ -341,13 +344,51 @@ while carryOn:
         text9 = font2.render('Left arrow key rotates the rocket to the left',1,BLACK)
         screen.blit(text9,(300,325))
 
+    elif level == 5:
+        screen.blit(starbg,(0,0))
+        Obs.rect.x = 500
+        Obs.rect.y = 380
+
+        Obs1.rect.x =500
+        Obs1.rect.y =300
+
+        Obs2.rect.x =480
+        Obs2.rect.y =260
+
+        Obs3.rect.x =400
+        Obs3.rect.y =300
+
+        Obs4.rect.x =400
+        Obs4.rect.y =380
+
+        Obs5.rect.x =380
+        Obs5.rect.y =270
+
+        Obs6.rect.x =360
+        Obs6.rect.y =230
+
+        Obs7.rect.x =320
+        Obs7.rect.y =200
+
+        Obs8.rect.x =430
+        Obs8.rect.y =200
+
+
+        Obs9.rect.x =410
+        Obs9.rect.y =170
+
+
+        Obs10.rect.x =380
+        Obs10.rect.y =140
+        ASTEROID_sprites_lists.draw(screen)
+
             
         
     # Update the screen with queued shapes
     pygame.display.flip()
 
     # --- Limit to 60 frames per second
-    clock.tick(60)
+    clock.tick(30)
 
 pygame.quit()
 
