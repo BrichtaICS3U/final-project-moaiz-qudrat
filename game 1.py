@@ -1,4 +1,5 @@
 from rocketclass import Rocket
+from Worm import WormHole
 from Asteroid import Asteroid1
 import pygame, sys
 from pygame.locals import *
@@ -12,8 +13,8 @@ asteroid = pygame.image.load("asteroid-icon.png")
 ast= pygame.transform.scale(asteroid, (50,50))
 arrows = pygame.image.load("arrow.png")
 starbg = pygame.image.load("stars-in-night-sky.png")
-wormhole = pygame.image.load("wormhole.png")
-wormhole1 = pygame.transform.scale(wormhole,(70,70))
+wormhole2 = pygame.image.load("wormhole.png")
+wormhole1 = pygame.transform.scale(wormhole2,(70,70))
     
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -23,6 +24,7 @@ RED = (234, 53, 70)
 BRIGHT_RED = (241,126,137)
 BRIGHT_Blue = (135,212,223)
 Blue = (67,188,205)
+
 
 
 speed = 1
@@ -72,6 +74,7 @@ Obs7.rect.y =200
 Obs8.rect.x =430
 Obs8.rect.y =200
 
+
 Obs9.rect.x =410
 Obs9.rect.y =170
 
@@ -89,7 +92,11 @@ player.rect.x = 460
 player.rect.y = 400
 ROCKET_sprites_lists.add(player)
 
-
+Worm_sprites_lists = pygame.sprite.Group()
+Worm2 = WormHole(wormhole1,70,70)
+Worm2.rect.x = 315
+Worm2.rect.y = 135
+Worm_sprites_lists.add(Worm2)
             
 #pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=4096)
 #pygame.mixer.music.load()
@@ -118,7 +125,6 @@ class Button():
         self.txt = txt
         self.txt_surf = self.font.render(self.txt, 1, self.fg)
         self.txt_rect = self.txt_surf.get_rect(center=[s//2 for s in self.size])
-
         self.surface = pygame.surface.Surface(size)
         self.rect = self.surface.get_rect(center=location)
 
@@ -258,19 +264,21 @@ while carryOn:
         player.moveBackward(10)
 
     hits = pygame.sprite.spritecollide(player, ASTEROID_sprites_lists, False, pygame.sprite.collide_circle_ratio(0.95))
+    Win = pygame.sprite.spritecollide(player, Worm_sprites_lists, False, pygame.sprite.collide_circle_ratio(0.95))
     if hits:
         print("you crashed")
         carryOn = False
-  
+    elif Win:
+        print("You Won!")
+        carryOn = False
     
-        
-            
+          
     # --- Game logic goes here
 
     # --- Draw code goes here
     screen.fill(WHITE)
     screen.fill(BLACK)
-    screen.blit(wormhole1,(50,50))
+    #screen.blit(wormhole1,(50,50))
     screen.blit(starbg,(0,0))
     screen.blit(background, (0, 0))
     screen.blit(Rocketbg, (300,50))
@@ -293,12 +301,12 @@ while carryOn:
             
     elif level == 3:
         screen.blit(starbg,(0,0))
-        screen.blit(wormhole1,(315,135))
+        #screen.blit(wormhole1,(315,135))
         for button in level3_buttons:
             button.draw()
         ROCKET_sprites_lists.draw(screen)
         ASTEROID_sprites_lists.draw(screen)
-            
+        Worm_sprites_lists.draw(screen)   
     elif level == 4:
         screen.fill(WHITE)
         screen.blit(arrows,(20,220))
@@ -339,7 +347,7 @@ while carryOn:
     pygame.display.flip()
 
     # --- Limit to 60 frames per second
-    clock.tick(60)
+    clock.tick(30)
 
 pygame.quit()
 
