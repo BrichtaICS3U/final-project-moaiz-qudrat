@@ -199,20 +199,18 @@ textRectTitle.center = (400,50)
 
 
 button_PLAY = Button("PLAY", (SCREENWIDTH/6, SCREENHEIGHT/4-50),my_play, bg=RED)
-button_INSTRUCTIONS = Button("INSTRUCTIONS",(SCREENWIDTH/6, SCREENHEIGHT*2/4-50),my_INSTRUCTIONS, bg=RED)
+button_INSTRUCTIONS = Button("INSTRUCTIONS",(SCREENWIDTH/6, SCREENHEIGHT*2/4-50),my_INSTRUCTIONS, bg=RED, font_size = 12)
 button_SETTINGS = Button("SOUND", (SCREENWIDTH/6, SCREENHEIGHT*3/4-50),my_next_function, bg=RED)
 button_QUIT = Button("QUIT", (SCREENWIDTH/6, SCREENHEIGHT*4/4-50), my_quit_function, bg=RED)
 button_ON = Button("ON", (SCREENWIDTH/5, SCREENHEIGHT/4), play_music,bg=GREEN)
 button_OFF= Button("OFF", (SCREENWIDTH/5, SCREENHEIGHT*2/4),stop_music, bg=GREEN)
 button_Previous2 = Button("Previous", (SCREENWIDTH/5, SCREENHEIGHT*3/4), my_previous_function,bg=RED)
-button_next_level = Button("Next level",(SCREENWIDTH*3/4, SCREENHEIGHT*3/4),my_next_level,bg=RED)
+
 #arrange button groups depending on level
 level1_buttons = [button_PLAY,button_INSTRUCTIONS,button_SETTINGS, button_QUIT]
 level2_buttons = [button_ON,button_OFF,button_Previous2]
-level3_buttons = [button_Previous2,button_next_level]
 level4_buttons = [button_Previous2]
 #---------Main Program Loop----------
-
 
 while carryOn:
     # --- Main event loop ---
@@ -228,52 +226,57 @@ while carryOn:
     if keys[pygame.K_RIGHT]:
         player.rotRight()
     if keys[pygame.K_UP]:
-        player.Thurst(10)
+        player.Thurst(2)
     if keys[pygame.K_DOWN]:
-        player.moveBackward(10)
+        player.moveBackward(1)
 
+    if player.rect.x < 0 or player.rect.x > SCREENWIDTH and player.rect.y < 0 or player.rect.y > SCREENHEIGHT:
+        player.rect.x = SCREENWIDTH/2
+        player.rect.y = SCREENHEIGHT/2
     hits = pygame.sprite.spritecollide(player, ASTEROID_sprites_lists, False, pygame.sprite.collide_circle_ratio(0.95))
     Win = pygame.sprite.spritecollide(player, Worm_sprites_lists, False, pygame.sprite.collide_circle_ratio(0.95))
     if hits:
         print("you crashed")
         carryOn = False
     elif Win:
-        print("You Won!") 
-        carryOn = False
+        my_next_level()
+        
+        player.reset()
+
+        player.rect.x = 460
+        player.rect.y = 400
+        print("You won")
+        carryOn = True
     
           
     # --- Game logic goes here
-
+    player.update()
+    #player.update1()
     # --- Draw code goes here
     screen.fill(WHITE)
     screen.fill(BLACK)
     screen.blit(starbg,(0,0))
     screen.blit(background, (0, 0))
     screen.blit(Rocketbg, (300,50))
-    screen.blit(RocketImage, (600,400))
     screen.blit(textSurfaceTitle,textRectTitle)
-    
-
-    # Clear the screen to white
     
 
     # Draw buttons
     
-    if level == 1:
+    if level == 1: #main screen
         for button in level1_buttons:
             button.draw()
             
-    elif level == 2:#settings
+    elif level == 2: #settings
         for button in level2_buttons:
             button.draw()
             
-    elif level == 3:#game
+    elif level == 3: #game
         screen.blit(starbg,(0,0))
-        for button in level3_buttons:
-            button.draw()
         ROCKET_sprites_lists.draw(screen)
         Obs.rect.x = 500
         Obs.rect.y = 380
+
 
         Obs1.rect.x =500
         Obs1.rect.y =300
@@ -310,7 +313,7 @@ while carryOn:
         ASTEROID_sprites_lists.draw(screen)
         Worm_sprites_lists.draw(screen)
         
-    elif level == 4:
+    elif level == 4: #instructions
         screen.fill(WHITE)
         screen.blit(arrows,(20,220))
         for button in level4_buttons:
@@ -344,8 +347,10 @@ while carryOn:
         text9 = font2.render('Left arrow key rotates the rocket to the left',1,BLACK)
         screen.blit(text9,(300,325))
 
-    elif level == 5:
+    elif level == 5: #second level
         screen.blit(starbg,(0,0))
+        ROCKET_sprites_lists.draw(screen)
+        
         Obs.rect.x = 500
         Obs.rect.y = 380
 
@@ -373,14 +378,14 @@ while carryOn:
         Obs8.rect.x =430
         Obs8.rect.y =200
 
-
         Obs9.rect.x =410
         Obs9.rect.y =170
 
-
         Obs10.rect.x =380
         Obs10.rect.y =140
+        
         ASTEROID_sprites_lists.draw(screen)
+        Worm_sprites_lists.draw(screen)
 
             
         
