@@ -46,43 +46,19 @@ Obs7 = Asteroid1(ast, 10, 10)
 Obs8 = Asteroid1(ast, 10, 10)
 Obs9 = Asteroid1(ast, 10, 10)
 Obs10 = Asteroid1(ast, 10, 10)
-
-Obs.rect.x = 500
-Obs.rect.y = 380
-
-Obs1.rect.x =500
-Obs1.rect.y =300
-
-Obs2.rect.x =480
-Obs2.rect.y =260
-
-Obs3.rect.x =400
-Obs3.rect.y =300
-
-Obs4.rect.x =400
-Obs4.rect.y =380
-
-Obs5.rect.x =380
-Obs5.rect.y =270
-
-Obs6.rect.x =360
-Obs6.rect.y =230
-
-Obs7.rect.x =320
-Obs7.rect.y =200
-
-Obs8.rect.x =430
-Obs8.rect.y =200
+Obs11 = Asteroid1(ast, 10, 10)
+Obs12 = Asteroid1(ast, 10, 10)
+Obs13 = Asteroid1(ast, 10, 10)
+Obs14 = Asteroid1(ast, 10, 10)
+Obs15 = Asteroid1(ast, 10, 10)
+Obs16 = Asteroid1(ast, 10, 10)
+Obs17 = Asteroid1(ast, 10, 10)
+Obs18 = Asteroid1(ast, 10, 10)
+Obs19 = Asteroid1(ast, 10, 10)
+Obs20 = Asteroid1(ast, 10, 10)
 
 
-Obs9.rect.x =410
-Obs9.rect.y =170
-
-
-Obs10.rect.x =380
-Obs10.rect.y =140
-
-ASTEROID_sprites_lists.add(Obs,Obs1,Obs2,Obs3,Obs4,Obs5,Obs6,Obs7,Obs8,Obs9,Obs10)
+ASTEROID_sprites_lists.add(Obs,Obs1,Obs2,Obs3,Obs4,Obs5,Obs6,Obs7,Obs8,Obs9,Obs10,Obs12,Obs12,Obs13,Obs14,Obs15,Obs16,Obs17,Obs18,Obs19,Obs20)
 
 
 
@@ -165,9 +141,12 @@ def my_INSTRUCTIONS():
     global level
     level += 3
 
-def my_name():
+def my_next_level():
     global level
-    level += 4
+    if level == 3:
+        level += 2
+    else:
+        level += 1
     
 def my_previous_function():
     """A function that retreats to the previous level"""
@@ -236,11 +215,11 @@ button_QUIT = Button("QUIT", (SCREENWIDTH/6, SCREENHEIGHT*4/4-50), my_quit_funct
 button_ON = Button("ON", (SCREENWIDTH/5, SCREENHEIGHT/4), play_music,bg=GREEN)
 button_OFF= Button("OFF", (SCREENWIDTH/5, SCREENHEIGHT*2/4),stop_music, bg=GREEN)
 button_Previous2 = Button("Previous", (SCREENWIDTH/5, SCREENHEIGHT*3/4), my_previous_function,bg=RED)
-
+button_next_level = Button("Next level",(SCREENWIDTH*3/4, SCREENHEIGHT*3/4),my_next_level,bg=RED)
 #arrange button groups depending on level
 level1_buttons = [button_PLAY,button_INSTRUCTIONS,button_SETTINGS, button_QUIT]
 level2_buttons = [button_ON,button_OFF,button_Previous2]
-level3_buttons = [button_Previous2]
+level3_buttons = [button_Previous2,button_next_level]
 level4_buttons = [button_Previous2]
 #---------Main Program Loop----------
 
@@ -271,7 +250,8 @@ while carryOn:
     elif Win:
         level == 1
         print("You Won!")
-        #carryOn = False
+        carryOn = False
+
     
           
     # --- Game logic goes here
@@ -279,7 +259,6 @@ while carryOn:
     # --- Draw code goes here
     screen.fill(WHITE)
     screen.fill(BLACK)
-    #screen.blit(wormhole1,(50,50))
     screen.blit(starbg,(0,0))
     screen.blit(background, (0, 0))
     screen.blit(Rocketbg, (300,50))
@@ -296,18 +275,53 @@ while carryOn:
         for button in level1_buttons:
             button.draw()
             
-    elif level == 2:
+    elif level == 2:#settings
         for button in level2_buttons:
             button.draw()
             
-    elif level == 3:
+    elif level == 3:#game
         screen.blit(starbg,(0,0))
-        #screen.blit(wormhole1,(315,135))
         for button in level3_buttons:
             button.draw()
         ROCKET_sprites_lists.draw(screen)
+        Obs.rect.x = 500
+        Obs.rect.y = 380
+
+        Obs1.rect.x =500
+        Obs1.rect.y =300
+
+        Obs2.rect.x =480
+        Obs2.rect.y =260
+
+        Obs3.rect.x =400
+        Obs3.rect.y =300
+
+        Obs4.rect.x =400
+        Obs4.rect.y =380
+
+        Obs5.rect.x =380
+        Obs5.rect.y =270
+
+        Obs6.rect.x =360
+        Obs6.rect.y =230
+
+        Obs7.rect.x =320
+        Obs7.rect.y =200
+
+        Obs8.rect.x =430
+        Obs8.rect.y =200
+
+
+        Obs9.rect.x =410
+        Obs9.rect.y =170
+
+
+        Obs10.rect.x =380
+        Obs10.rect.y =140
+
         ASTEROID_sprites_lists.draw(screen)
-        Worm_sprites_lists.draw(screen)   
+        Worm_sprites_lists.draw(screen)
+        
     elif level == 4:
         screen.fill(WHITE)
         screen.blit(arrows,(20,220))
@@ -343,6 +357,81 @@ while carryOn:
         screen.blit(text9,(300,325))
 
 
+    elif level == 5:
+        screen.blit(starbg,(0,0))
+        Obs.rect.x = 100
+        Obs.rect.y = 50
+
+        Obs1.rect.x =125
+        Obs1.rect.y =75
+
+        Obs2.rect.x =150
+        Obs2.rect.y =100
+
+        Obs3.rect.x =60
+        Obs3.rect.y =50
+
+        Obs4.rect.x =20
+        Obs4.rect.y =50
+
+        Obs5.rect.x =380
+        Obs5.rect.y =270
+
+        Obs6.rect.x =360
+        Obs6.rect.y =230
+
+        Obs7.rect.x =320
+        Obs7.rect.y =200
+
+        Obs8.rect.x =430
+        Obs8.rect.y =200
+
+
+        Obs9.rect.x =410
+        Obs9.rect.y =170
+
+
+        Obs10.rect.x =380
+        Obs10.rect.y =140
+
+        Obs11.rect.x =355
+        Obs11.rect.y =110
+
+        Obs12.rect.x = 20
+        Obs12.rect.y = 70
+
+        #Obs13.rect.x =
+        #Obs13.rect.y =
+
+        #Obs14.rect.x =
+        #Obs14.rect.y =
+
+        #Obs15.rect.x =
+        #Obs15.rect.y =
+        
+        #Obs16.rect.x =
+        #Obs16.rect.y =
+
+        #Obs17.rect.x =
+        #Obs17.rect.y =
+
+        #Obs18.rect.x =
+        #Obs18.rect.y =
+
+
+        #Obs19.rect.x =
+        #Obs19.rect.y =
+
+
+        #Obs20.rect.x =
+        #Obs20.rect.y =
+
+
+
+        
+        ASTEROID_sprites_lists.draw(screen)
+
+            
         
     # Update the screen with queued shapes
     pygame.display.flip()
