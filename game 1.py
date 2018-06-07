@@ -270,10 +270,6 @@ while carryOn:
         player.Thurst(2)
     if keys[pygame.K_DOWN]:
         player.moveBackward(1)
-
-    if level == 5:
-        player.rect.x =740
-        player.rect.y =480
         
     if player.rect.x < 0 or player.rect.x > SCREENWIDTH and player.rect.y < 0 or player.rect.y > SCREENHEIGHT:
         player.rect.x = 460
@@ -294,8 +290,8 @@ while carryOn:
         
         player.reset()
 
-        player.rect.x = 730
-        player.rect.y = 430
+        player.rect.x = 680
+        player.rect.y = 450
         print("You won")
         carryOn = True
     
