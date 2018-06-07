@@ -93,8 +93,8 @@ ASTEROID_sprites_lists.add(Obs,Obs1,Obs2,Obs3,Obs4,Obs5,Obs6,Obs7,Obs8,Obs9,Obs1
 
 ROCKET_sprites_lists = pygame.sprite.Group()
 player = Rocket(RocketImage,1,1,5,0,5)
-player.rect.x = 460
-player.rect.y = 400
+player.rect.x = 650
+player.rect.y = 450
 ROCKET_sprites_lists.add(player)
 
 Worm_sprites_lists = pygame.sprite.Group()
