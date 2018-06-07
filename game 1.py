@@ -11,10 +11,13 @@ Rocketbg = pygame.image.load("rocketbg.png")
 RocketImage = pygame.transform.scale(Rocketbg,(41,62))
 asteroid = pygame.image.load("asteroid-icon.png")
 ast= pygame.transform.scale(asteroid, (50,50))
-arrows = pygame.image.load("arrow.png")
+arrows = pygame.image.load("arrow-keys-clipart-8-buttons.png")
+aa= pygame.transform.scale(arrows, (150,150))
 starbg = pygame.image.load("stars-in-night-sky.png")
 wormhole2 = pygame.image.load("wormhole.png")
 wormhole1 = pygame.transform.scale(wormhole2,(70,70))
+soundbg = pygame.image.load("Space-PNG-Clipart.png")
+instrbg = pygame.image.load("space-png-1920.png")
     
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -64,10 +67,11 @@ Worm2.rect.x = 315
 Worm2.rect.y = 135
 Worm_sprites_lists.add(Worm2)
             
-#pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=4096)
-#pygame.mixer.music.load()
-#pygame.mixer.music.play(-1)
+pygame.mixer.pre_init(frequency=44100, size=-16, channels=2, buffer=4096)
+pygame.mixer.music.load("12. Marvin Gaye & Tammi Terrell - Ain't No Mountain High Enough.mp3")
+pygame.mixer.music.play(-1)
 
+effect = pygame.mixer.Sound('Rocket Thrusters-SoundBible.com-1432176431.wav')
 
 class Button():
     """This is a class for a generic button.
@@ -126,6 +130,7 @@ def my_next_function():
 def my_play():
     global level
     level += 2
+    stop_music()
     
 def my_INSTRUCTIONS():
     global level
@@ -202,8 +207,8 @@ button_PLAY = Button("PLAY", (SCREENWIDTH/6, SCREENHEIGHT/4-50),my_play, bg=RED)
 button_INSTRUCTIONS = Button("INSTRUCTIONS",(SCREENWIDTH/6, SCREENHEIGHT*2/4-50),my_INSTRUCTIONS, bg=RED, font_size = 12)
 button_SETTINGS = Button("SOUND", (SCREENWIDTH/6, SCREENHEIGHT*3/4-50),my_next_function, bg=RED)
 button_QUIT = Button("QUIT", (SCREENWIDTH/6, SCREENHEIGHT*4/4-50), my_quit_function, bg=RED)
-button_ON = Button("ON", (SCREENWIDTH/5, SCREENHEIGHT/4), play_music,bg=GREEN)
-button_OFF= Button("OFF", (SCREENWIDTH/5, SCREENHEIGHT*2/4),stop_music, bg=GREEN)
+button_ON = Button("ON", (SCREENWIDTH/5, SCREENHEIGHT/4), play_music,bg=RED)
+button_OFF= Button("OFF", (SCREENWIDTH/5, SCREENHEIGHT*2/4),stop_music, bg=RED)
 button_Previous2 = Button("Previous", (SCREENWIDTH/5, SCREENHEIGHT*3/4), my_previous_function,bg=RED)
 
 #arrange button groups depending on level
@@ -226,18 +231,27 @@ while carryOn:
     if keys[pygame.K_RIGHT]:
         player.rotRight()
     if keys[pygame.K_UP]:
+        effect.play()
         player.Thurst(2)
     if keys[pygame.K_DOWN]:
         player.moveBackward(1)
-
+        
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            while True: #Infinite loop that will be broken when the user press the space bar again
+                event = pygame.event.wait()
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    break #Exit infinite loop
+    
     if player.rect.x < 0 or player.rect.x > SCREENWIDTH and player.rect.y < 0 or player.rect.y > SCREENHEIGHT:
-        player.rect.x = SCREENWIDTH/2
-        player.rect.y = SCREENHEIGHT/2
+        player.rect.x = 460
+        player.rect.y = 400
+        player.speed = 0
     hits = pygame.sprite.spritecollide(player, ASTEROID_sprites_lists, False, pygame.sprite.collide_circle_ratio(0.95))
     Win = pygame.sprite.spritecollide(player, Worm_sprites_lists, False, pygame.sprite.collide_circle_ratio(0.95))
     if hits:
+        level = 6
         print("you crashed")
-        carryOn = False
+        #carryOn = False
     elif Win:
         my_next_level()
         
@@ -246,12 +260,12 @@ while carryOn:
         player.rect.x = 460
         player.rect.y = 400
         print("You won")
-        carryOn = True
+        #carryOn = True
     
           
     # --- Game logic goes here
     player.update()
-    #player.update1()
+
     # --- Draw code goes here
     screen.fill(WHITE)
     screen.fill(BLACK)
@@ -259,7 +273,6 @@ while carryOn:
     screen.blit(background, (0, 0))
     screen.blit(Rocketbg, (300,50))
     screen.blit(textSurfaceTitle,textRectTitle)
-    
 
     # Draw buttons
     
@@ -268,6 +281,8 @@ while carryOn:
             button.draw()
             
     elif level == 2: #settings
+        screen.fill(WHITE)
+        screen.blit(soundbg,(0,0))
         for button in level2_buttons:
             button.draw()
             
@@ -276,7 +291,6 @@ while carryOn:
         ROCKET_sprites_lists.draw(screen)
         Obs.rect.x = 500
         Obs.rect.y = 380
-
 
         Obs1.rect.x =500
         Obs1.rect.y =300
@@ -314,37 +328,37 @@ while carryOn:
         Worm_sprites_lists.draw(screen)
         
     elif level == 4: #instructions
-        screen.fill(WHITE)
-        screen.blit(arrows,(20,220))
+        screen.blit(instrbg,(0,0))
+        screen.blit(aa,(20,220))
         for button in level4_buttons:
             button.draw()
         font = pygame.font.Font('freesansbold.ttf', 30)
-        text1 = font.render('INSTRUCTIONS',1,BLACK)
+        text1 = font.render('INSTRUCTIONS',1,WHITE)
         screen.blit(text1,(300,20))
         
         font2 = pygame.font.Font('freesansbold.ttf', 20)
-        text2 = font2.render('In this game the objective is to reach the wormhole',1,BLACK)
+        text2 = font2.render('In this game the objective is to reach the wormhole',1,WHITE)
         screen.blit(text2,(20,100))
         
-        text3 = font2.render('that is surrounded by orbiting meteorids. The player must follow',1,BLACK)
+        text3 = font2.render('that is surrounded by orbiting meteorids. The player must follow',1,WHITE)
         screen.blit(text3,(20,130))
 
-        text4 = font2.render('the designated path without touching the meteorids. If the players rocket',1,BLACK)
+        text4 = font2.render('the designated path without touching the meteorids. If the players rocket',1,WHITE)
         screen.blit(text4,(20,160))
 
-        text5 = font2.render('touches the path or the meteorids they will have to restart from the beginning',1,BLACK)
+        text5 = font2.render('touches the path or the meteorids they will have to restart from the beginning',1,WHITE)
         screen.blit(text5,(20,190))
 
-        text6 = font2.render('Top arrow key is thrust',1,BLACK)
+        text6 = font2.render('Top arrow key is thrust',1,WHITE)
         screen.blit(text6,(300,250))
 
-        text7 = font2.render('Down arrow key moves rocket backwards',1,BLACK)
+        text7 = font2.render('Down arrow key moves rocket backwards',1,WHITE)
         screen.blit(text7,(300,275))
 
-        text8 = font2.render('Right arrow key rotates rocket to the right',1,BLACK)
+        text8 = font2.render('Right arrow key rotates rocket to the right',1,WHITE)
         screen.blit(text8,(300,300))
 
-        text9 = font2.render('Left arrow key rotates the rocket to the left',1,BLACK)
+        text9 = font2.render('Left arrow key rotates the rocket to the left',1,WHITE)
         screen.blit(text9,(300,325))
 
     elif level == 5: #second level
@@ -387,7 +401,11 @@ while carryOn:
         ASTEROID_sprites_lists.draw(screen)
         Worm_sprites_lists.draw(screen)
 
-            
+    elif level == 6:
+        screen.fill(BLACK)
+        font = pygame.font.Font('freesansbold.ttf', 50)
+        text1 = font.render('GAME OVER',1,WHITE)
+        screen.blit(text1,(250,200))
         
     # Update the screen with queued shapes
     pygame.display.flip()
